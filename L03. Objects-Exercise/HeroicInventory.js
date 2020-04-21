@@ -1,4 +1,4 @@
-function register(input = []){
+function solve(input){
 
     let heroesData = input.reduce((acc, heroArgs) => {
         let [heroName, heroLevel, heroItems] = heroArgs.split(' / ').map(x => x.trim());
@@ -6,5 +6,5 @@ function register(input = []){
         return acc;
     }, [])
     
-    console.log(JSON.stringify(heroesData))
+    return JSON.stringify(heroesData);
 }

@@ -1,29 +1,28 @@
-function carPrdoduction(input = []){
-    const carCatalog = {};
-    input.forEach(element => {
-        let [carBrand, carModel, qtty] = element.split(' | ');
-
-        if (!carCatalog[carBrand]) {
-            carCatalog[carBrand] = {};
+function carPrdoduction(input){
+    const catalog = input.reduce((acc, element) => {
+        const [brand, model, qtty] = element.split(' | ').map(x => x.trim());
+        
+        if(!acc.hasOwnProperty(brand)) {
+            acc[brand] = {};
         }
 
-        if(!carCatalog[carBrand][carModel]){
-            carCatalog[carBrand][carModel] = 0;
+        if(!acc[brand].hasOwnProperty(model)) {
+            acc[brand][model] = 0;
         }
 
-        carCatalog[carBrand][carModel] += +qtty;
-    });
+        acc[brand][model] += +qtty;
+
+        return acc
+    }, {});
 
     let result = '';
-    for (const kkk in carCatalog) {
-            result += `${kkk}\n`;
-            for (const kk in carCatalog[kkk]) {
-                if (carCatalog[kkk].hasOwnProperty(kk)) {
-                    result += `###${kk} -> ${carCatalog[kkk][kk]}\n`
-                }
+    for (const brand in catalog) {
+            result += `${brand}\n`;
+            for (const model in catalog[brand]) {
+                result += `###${model} -> ${catalog[brand][model]}\n`
             }
     }
-    return result;
+    return result.trim();
 }
 
 console.log(carPrdoduction([

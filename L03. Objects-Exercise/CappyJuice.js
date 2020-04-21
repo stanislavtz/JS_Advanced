@@ -1,35 +1,37 @@
-function produceJuice(input = []){
-    const juiceData = [];
-    const orderedJuiceData = [];
-    input.forEach(element => {
-        let [juiceName, quantity] = element.split(' => ');
-        const juice = {name: juiceName, qtty: +quantity};
+function produceJuice(array){
+    const juices = {};
+    const bottledJuices = {};
+    let juiceTemplate = (name, bottles) => `${name} => ${bottles}`;
 
-        if (!juiceData.includes(x => x.name === juice.name)) {
-            juiceData.push(juice);
+    array.forEach(element => {
+        const [name, qtty] = element.split(' => ');
+
+        if(!juices.hasOwnProperty(name)) {
+            juices[name] = 0;
         }
-        juice.qtty += +quantity;
-        
-        if (juice.qtty >= 1000) {
-            juice.producedBottles = Math.floor(juice.qtty / 1000);
-            if (!orderedJuiceData.find(x => x.name === juice.name)) {
-                orderedJuiceData.push(juice);
+        juices[name] += +qtty;
+
+        let possibleBottles = juices[name] / 1000;
+        if(possibleBottles >= 1) {
+            if(!bottledJuices.hasOwnProperty(name)){
+                bottledJuices[name] = 0;
             }
+
+            bottledJuices[name] += Math.floor(possibleBottles);
+            juices[name] -= Math.floor(possibleBottles) * 1000;
         }
     });
 
-    orderedJuiceData.forEach(element => {
-        if (element.producedBottles != null) {
-            console.log(`${element.name} => ${element.producedBottles}`);
-        }
-    })
+    for (const juice in bottledJuices) {
+        console.log(juiceTemplate(juice, bottledJuices[juice]));
+    }
 }
 
-(produceJuice([
-    'Kiwi => 234',
-    'Pear => 2345',
-    'Watermelon => 3456',
-    'Kiwi => 4567',
-    'Pear => 5678',
-    'Watermelon => 6789']
-))
+produceJuice(
+    ['Kiwi => 234',
+     'Pear => 2345',
+     'Watermelon => 3456',
+     'Kiwi => 4567',
+     'Pear => 5678',
+     'Watermelon => 6789']
+)
