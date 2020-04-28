@@ -1,38 +1,40 @@
-const solution = {
-    add: function (...input){
-        let [vA, vB] = input;
-        return [vA[0] + vB[0], vA[1] + vB[1]];
-    },
-
-    multiply: function (...input){
-        let [vA, scalar] = input;
-        return [vA[0] *= scalar, vA[1] *= scalar];
-    },
-
-    length : function (...input){
-        let [vector] = input
-        return Math.sqrt(vector[0] ** 2 + vector[1] ** 2);
-    },
-
-    dot : function (...input){
-        let [vA, vB] = input;
-        return vA[0] * vB[0] + vA[1] * vB[1];
-    },
-
-    cross : function (...input){
-        let [vA, vB] = input;
-        return vA[0] * vB[1] - vA[1] * vB[0];
+const solution = (function () {
+    function add(...input) {
+        const [[vXa, vYa], [vXb, vYb]] = input;
+        return [vXa + vXb, vYa + vYb];
     }
-}
 
-console.log(solution.length([3, -4]))
-console.log(solution.multiply([3.5, -2], 2))
-// function vectorCalculations(...input){
-    
-//     console.log(solution.add(input))
-//     console.log(solution.multiply(input))
-//     console.log(solution.dot(input))
-//     console.log(solution.cross(input))
-// }
- 
-// vectorCalculations([3, 7], [1, 0])
+    function multiply(...input) {
+        const [[vXa, vYa], multiplyer] = input;
+        return [vXa * multiplyer, vYa * multiplyer];
+    }
+
+    function length(...input) {
+        const [vXa, vYa] = input[0];
+        return Math.sqrt(vXa ** 2 + vYa ** 2);
+    }
+
+    function dot(...input) {
+        const [[vXa, vYa], [vXb, vYb]] = input;
+        return vXa * vXb + vYa * vYb;
+    }
+
+    function cross(...input) {
+        const [[vXa, vYa], [vXb, vYb]] = input;
+        return vXa * vYb - vXb * vYa;
+    }
+
+    return {
+        add,
+        multiply,
+        length,
+        dot,
+        cross
+    }
+})();
+
+console.log(solution.add([1, 1], [1, 0]));
+console.log(solution.multiply([3.5, -2], 2));
+console.log(solution.length([3, -4]));
+console.log(solution.dot([2, 3], [2, -1]));
+console.log(solution.cross([3, 7], [1, 0]));

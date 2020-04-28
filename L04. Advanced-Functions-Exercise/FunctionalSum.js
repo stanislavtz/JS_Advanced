@@ -1,15 +1,12 @@
-const add = (function result () {
+const add = (function () {
     let sum = 0;
-    function add(num){
+   
+    return  function result(num){
         sum += num;
-        return add;
+        result.toString = () => sum;
+        
+        return result;
     };
+})();
 
-    add.toString = function () {
-        return sum;
-    }
-
-    return add
-})()
-
-console.log(add(1)(6)(-3).toString())
+console.log(add(1)(5)(-5).toString());

@@ -1,29 +1,47 @@
-function printInfo(...input){
-    const obj = {}
-
-    createObject();
-
-    printSortedObject();
+function printInfo(...input) {
 
     function printSortedObject() {
         Object.entries(obj)
             .sort((a, b) => {
-                const [typeA, qttyA] = a;
-                const [typeB, qttyB] = b;
-                return qttyB - qttyA;
-            }).forEach(el => console.log(`${el[0]} = ${el[1]}`));
+                return b[1] - a[1];
+            })
+            .forEach(el => output.push(`${el[0]} = ${el[1]}`));
     }
 
     function createObject() {
         input.forEach(el => {
-            console.log(`${typeof (el)}: ${el}`);
+            let type;
 
-            if (!obj[typeof (el)]) {
-                obj[typeof (el)] = 0;
+            if (typeof el === 'object' && Object.values(el).length) {
+                type = typeof el;
+                output.push(`${type}:`);
+                
+                Object.values(el).forEach(e => {
+                    fillObjectData(typeof e);
+                })
             }
-            
-            ++obj[typeof (el)];
+            else {
+                type = typeof el;
+                output.push(`${type}: ${el}`);
+                fillObjectData(type);
+            }
         });
     }
+
+    function fillObjectData(type) {
+        if (!obj[type]) {
+            obj[type] = 0;
+        }
+        obj[type]++;
+    }
+
+    const obj = {};
+    const output = [];
+
+    createObject();
+    printSortedObject();
+
+    output.forEach(e => console.log(e));
 }
 
+printInfo(42, 'cat', [], undefined, { name: "Pesho", age: 25, like: () => console.log("swimming")})

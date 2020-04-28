@@ -1,38 +1,39 @@
-function createPerson(...input){
-    const person = {};
-    const [name, age, weight, height] = input
+function personData(...input) {
+    const [name, age, weight, height] = input;
     const heigthM = height / 100;
-    person.name = name;
-    person.personalInfo = {
+    const BMI = Math.round(weight / heigthM ** 2, 1);
+
+    const personalInfo = {
         age,
         weight,
         height
-    }
-    person.BMI = Math.round(weight / heigthM ** 2, 1);
-    person.status = status();
-    if (person.status === 'obese') {
-        person.recommendation = 'admission required';
-    }
+    };
 
-    function status (){
-        const value = person.BMI;
-
-        if (value < 18.5) {
-            return "underweight";
+    const status = (function () {
+        if (BMI < 18.5) {
+            return 'underweight';
         }
-        else if(value < 25){
+        else if (BMI < 25) {
             return 'normal';
         }
-        else if(value < 30){
-            return 'overweight';
+        else if (BMI < 30) {
+            return 'overweight'
         }
-        else{
-            return 'obese'
-        }
+        return 'obese';
+    })();
+
+    const person = {
+        name,
+        personalInfo,
+        BMI,
+        status
+    }
+
+    if (status === 'obese') {
+        person.recommendation = 'admission required';
     }
 
     return person;
 }
 
-console.log(createPerson("Peter", 29, 75, 182))
-console.log(createPerson('Honey Boo Boo', 9, 57, 137))
+console.log(personData('Peter', 29, 75, 182));
