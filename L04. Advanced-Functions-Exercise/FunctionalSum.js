@@ -1,12 +1,11 @@
 const add = (function () {
     let sum = 0;
-   
-    return  function result(num){
-        sum += num;
-        result.toString = () => sum;
-        
-        return result;
-    };
+    let result = (num) => {
+            sum += num;
+            result.valueOf = () => sum;
+            return result;
+        };
+    return result;
 })();
 
-console.log(add(1)(5)(-5).toString());
+console.log(add(1)(5)(-2).valueOf());
