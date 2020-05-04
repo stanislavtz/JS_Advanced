@@ -1,33 +1,40 @@
 function solve() {
-    let button = document.getElementsByTagName('button')[0];
-    let input = document.getElementsByTagName('input')[0];
-    let lettersTagsCollection = document.getElementsByTagName('li'); 
-    let index = -1;
-
-    const alphabetList ="abcdefghijklmnopqrstuvwxyz".toUpperCase();
-
-    [...lettersTagsCollection].forEach(e => {
-        e.setAttribute('id', `${alphabetList[++index]}`);
-    });
+    const button = document.getElementsByTagName('button')[0];
+    const input = document.getElementsByTagName('input')[0];
+    const lettersList = document.getElementsByTagName('li'); 
     
+    catalogLettersInitialize();
     
     button.addEventListener('click', () => {
+        const catalog = generateCatalog(lettersList);    
         let text = input.value;
         if (text) {
-            
             let firstLetter = text[0].toUpperCase();
+            let name = firstLetter + text.substring(1).toLowerCase();
             let currentLine = document.getElementById(`${firstLetter}`);
-    
-            let currentLineContent = currentLine.innerHTML;
-            let name = text[0].toUpperCase() + text.substring(1).toLowerCase();
-            if (currentLineContent.length > 0) {
-                currentLine.innerHTML += `, ${name}`;
-            }
-            else{
-                currentLine.innerHTML = `${name}`;
-            }
-    
+
+            catalog[firstLetter].push(name);
+            currentLine.textContent = catalog[firstLetter].join(', ');
             input.value = '';
         }
     });
+
+    function generateCatalog(list) {
+        return [...list].reduce((acc, element) => {
+            if (!acc[element.id]) {
+                acc[element.id] = [];
+            }
+            if (element.textContent) {
+                acc[element.id].push(element.textContent);
+            }
+            return acc;
+        }, {});
+    }
+
+    function catalogLettersInitialize() {
+        let index = 65;
+        [...lettersList].forEach(line => {
+            line.setAttribute('id', `${String.fromCharCode(index++)}`);
+        });
+    }
 }

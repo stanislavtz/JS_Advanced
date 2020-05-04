@@ -1,34 +1,29 @@
 function solve() {
   let scores = 0;
-  let correctAnswersList = ['onclick', 'JSON.stringify()', 'A programming API for HTML and XML documents'];
-
-  let sectionsList = document.getElementsByTagName('section');
   let counter = 0;
-  
-  let tempClick = document.getElementById('quizzie');
-  tempClick.addEventListener('click', (e) => {
-    if (e.target.className === 'answer-text') {
-      let answer = e.target.innerHTML;
-      if (correctAnswersList.includes(answer)) {
+  let correctAnswers = ['onclick', 'JSON.stringify()', 'A programming API for HTML and XML documents'];
+
+  let result = document.querySelector('#results .results-inner h1');
+  let sections = Array.from(document.getElementsByTagName('section'));
+
+  for (const section of sections) {
+    let answers = Array.from(section.getElementsByTagName('p'));
+    answers.forEach(answer => answer.addEventListener('click', calculateScores));
+
+    function calculateScores() {
+      counter++;
+
+      if (correctAnswers.includes(this.textContent)) {
         scores++;
       }
 
-      sectionsList[counter].style.display = 'none';
-      counter++;
-      if (counter < sectionsList.length) {
-        sectionsList[counter].style.display = 'block';
-      }
+      section.style.display = 'none';
+      section.nextElementSibling.style.display = 'block';
 
-      if (counter === 3) {
-        document.getElementById('results').style.display = 'block';
-        
-        if (scores === 3) {
-          document.getElementById('results').innerHTML = '<h1>You are recognized as top JavaScript fan!</h1>';
-        }
-        else {
-          document.getElementById('results').innerHTML = `<h1>You have ${scores} right answers</h1>`;
-        }
+      if (counter === correctAnswers.length) {
+        result.parentElement.parentElement.style.display = 'block';
+        result.textContent = scores === correctAnswers.length ? `You are recognized as top JavaScript fan!` : `You have ${scores} right answers`;
       }
     }
-  });
+  }
 }

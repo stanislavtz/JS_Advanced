@@ -1,14 +1,15 @@
 function solve() {
-   let sendButton = document.getElementById('send');
-   let myMessage = document.getElementById('chat_input');
-   let messageBox = document.getElementById('chat_messages');
+   const button = document.querySelector('#send');
+   const inputArea = document.querySelector('#chat_input');
+   const messagesArea = document.querySelector('#chat_messages');
 
-   sendButton.addEventListener('click', () => {
-      let newElement = document.createElement('div');
-      newElement.innerHTML = myMessage.value;
-      newElement.classList.add('message', 'my-message');
+   button.addEventListener('click', sendMessage);
 
-      messageBox.appendChild(newElement);
-      myMessage.value = '';
-   })
+   function sendMessage() {
+      const div = document.createElement('div');
+      div.setAttribute('class', 'message my-message');
+      div.textContent = inputArea.value;
+      messagesArea.appendChild(div);
+      inputArea.value = '';
+   }
 }
