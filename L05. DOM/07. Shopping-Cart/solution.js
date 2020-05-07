@@ -1,17 +1,17 @@
 function solve() {
    const $products = document.getElementsByClassName('product');
-   let $textArea = document.getElementsByTagName('textarea')[0];
+   const $textArea = document.getElementsByTagName('textarea')[0];
+   const productList = [];
+
+   let totalCost = 0;
    $textArea.textContent = '';
 
-   const productList = [];
-   let totalCost = 0;
-
    Array.from($products).forEach(product => {
-      const productTitle = product.getElementsByClassName('product-title');
-      const productPrice = product.getElementsByClassName('product-line-price');
+      const productTitle = product.querySelector('.product-title');
+      const productPrice = product.querySelector('.product-line-price');
 
-      const name = productTitle[0].textContent;
-      const price = productPrice[0].textContent;
+      const name = productTitle.textContent;
+      const price = productPrice.textContent;
 
       const $button = product.querySelector('.add-product');
       $button.addEventListener('click', () => {
@@ -31,7 +31,10 @@ function solve() {
    $checkOut.addEventListener('click', disableButtons);
    
    function disableButtons() {
-      $textArea.textContent += `You bought ${Array.from(productList).join(', ')} for ${totalCost.toFixed(2)}.`;
-      Array.from($allButtons).forEach(button => button.disabled = true);
+      result = productList.join(', ')
+      $textArea.textContent += `You bought ${result} for ${totalCost.toFixed(2)}.`;
+      Array.from($allButtons).forEach(button => {
+         button.disabled = true;
+      });
    };
 }

@@ -1,9 +1,7 @@
 function solve() {
+   const $input = document.querySelector('#searchField');
+   const $button = document.querySelector('#searchBtn');
    const $allElements = document.querySelectorAll('tbody tr');
-   console.log($allElements);
-
-   const $button = document.querySelector('button');
-   const $input = document.getElementById('searchField');
    
    $button.addEventListener('click', search);
    function search(e){
