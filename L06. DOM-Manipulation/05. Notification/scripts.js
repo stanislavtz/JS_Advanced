@@ -1,10 +1,10 @@
 function notify(message) {
-    const $notification = document.getElementById('notification');
-    $notification.textContent = message;
+    const notification = document.querySelector('#notification');
+    notification.textContent = message;
 
-    $notification.style.display = 'block';
+    notification.style.display = 'block';
     
-    setTimeout(() => {
-        $notification.style.display = 'none';
+    setTimeout(() =>  {
+        notification.style.display = 'none';
     }, 2000);  
 }
