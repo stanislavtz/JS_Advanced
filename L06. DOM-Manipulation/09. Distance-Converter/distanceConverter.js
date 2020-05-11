@@ -4,9 +4,6 @@ function attachEventsListeners() {
     const toDist = document.querySelector('#outputDistance');
     const inputDistance = document.querySelector('#inputUnits');
     const outputDistance = document.querySelector('#outputUnits');
-
-    
-    
     
     divs[0].addEventListener('click', (e) => {
         let inMeters;
@@ -37,7 +34,7 @@ function attachEventsListeners() {
             else if (inputDistance.value === "in") {
                 inMeters = +fromDist.value * 0.0254;
             }
-            
+
 
             if (outputDistance.value === "km") {
                 toDist.value = inMeters / 1000;
