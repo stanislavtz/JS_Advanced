@@ -61,7 +61,7 @@ function solve() {
         clearBtn.disabled = false;
     });
 
-    clearBtn.addEventListener('click', () => {
+    clearBtn.addEventListener('click', (e) => {
         [...document.querySelectorAll('input')].map(e => e.value = null);
         document.querySelector('table').style.border = null;
         document.getElementById('check').children[0].textContent = "";
