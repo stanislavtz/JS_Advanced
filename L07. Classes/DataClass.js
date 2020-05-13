@@ -1,5 +1,5 @@
-class HTTPRequest {
-    constructor(method, uri, version, message){
+class Request {
+    constructor(method, uri, version, message) {
         this.method = method;
         this.uri = uri;
         this.version = version;
@@ -9,4 +9,6 @@ class HTTPRequest {
     }
 }
 
-const httpRequest = new HTTPRequest(method, uri, version, message);
+let myData = new Request('GET', 'http://google.com', 'HTTP/1.1', '')
+
+console.log(myData)
