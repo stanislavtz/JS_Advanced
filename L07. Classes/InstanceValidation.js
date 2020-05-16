@@ -1,62 +1,72 @@
 class CheckingAccount {
+    #clientId;
+    #email;
+    #firstName;
+    #lastName;
+
     constructor(clientId, email, firstName, lastName) {
         this.clientId = clientId;
         this.email = email;
         this.firstName = firstName;
-        this.lastName = lastName;
-    }
-    
-    get clientId() {
-        return this.clientId;
-    }
-    set clientId(id) {
-        let re = /\d+/;
-        if (!re.test(id) || id.length !== 6) {
-            throw TypeError(`Client ID must be a 6-digit number`);
-        }
-        return clientId;
+        this.lastName = lastName
     }
 
-    get email(){
-        return this.email;
+    get clientId() {
+        return this.#clientId;
     }
-    set email(email) {
-        let re = /\w+@\w+\.\w+/;
-        if (!re.test(email)) {
-            throw TypeError(`Invalid e-mail`);
-        }
-        return email;
+
+    get email() {
+        return this.#email;
     }
 
     get firstName() {
-        return this.firstName;
-    }
-    set firstName(firstName) {
-        let re = /[A-Z][a-z]+/;
-
-        if (firstName.length < 3 || firstName.length > 20) {
-            throw TypeError(`First name must be between 3 and 20 characters long`);
-        }
-        
-        if(!re.test(firstName)){
-            throw TypeError(`First name must contain only Latin characters`);
-        }
-        return firstName;
+        return this.#firstName;
     }
 
     get lastName() {
-        return this.lasttName;
+        return this.#lastName;
     }
-    set lastName(lasttName) {
-        let re = /[A-Z][a-z]+/;
 
-        if (lasttName.length < 3 || lasttName.length > 20) {
-            throw TypeError(`Last name must be between 3 and 20 characters long`);
+    set clientId(id) {
+        if (id.toString().length !== 6) {
+            throw new TypeError('Client ID must be a 6-digit number');
+        }
+
+        this.#clientId = id;
+    }
+
+    set email(mail) {
+        let re = /\w+@\w+\.\w+/;
+        if(!re.exec(mail)) {
+            throw new TypeError('Invalid e-mail');
         }
         
-        if(!re.test(lasttName)){
-            throw TypeError(`Last name must contain only Latin characters`);
+        this.#email = mail;
+    }
+
+    set firstName(fName) {
+        this.#firstName = this.validateName(fName, "First");
+    }
+
+    set lastName(lName) {
+        this.#lastName = this.validateName(lName, "Last");
+    }
+
+    validateName(name, position) {
+        let re = /[A-Z][a-z]+/;
+
+        if(name.length < 3 || name.length > 20) {
+            throw new TypeError(`${position} name must be between 3 and 20 characters long`);
         }
-        return lasttName;
+
+        if(!re.exec(name)) {
+            throw new TypeError(`${position} name must contain only Latin characters`);
+        }
+
+        return name;
     }
 }
+
+let acc = new CheckingAccount('423545', 'ivan@some.com', 'Iv4an', 'Pe4trov');
+acc.clientId = 5555895
+console.log(acc.clientId)

@@ -1,5 +1,5 @@
 class Kitchen {
-    menu = [];
+    menu = {};
     productsInStock = {};
     actionsHistory = [];
 
@@ -7,107 +7,92 @@ class Kitchen {
         this.budget = +budget;
     }
 
-    loadProducts(products = []) {
-        products.forEach(pInfo => {
-            let name = pInfo.split(' ')[0];
-            let qtty = +pInfo.split(' ')[1];
-            let price = +pInfo.split(' ')[2];
+    loadProducts(products) {
+        products.forEach((product) => {
+            const [name, qtty, price] = product.split(' ');
 
-            let isBudget = this.budget - price >= 0;
-            let isAdded = false;
-
-            if (isBudget) {
+            if (this.budget - +price < 0) {
+                this.actionsHistory.push(`There was not enough money to load ${qtty} ${name}`);
+            }
+            else {
                 if (!this.productsInStock[name]) {
                     this.productsInStock[name] = 0;
                 }
-                this.productsInStock[name] += qtty;
-                this.budget -= price;
-                isAdded = true;
+                this.productsInStock[name] += +qtty;
+                this.budget -= +price;
+                this.actionsHistory.push(`Successfully loaded ${qtty} ${name}`);
             }
-                
-            let result = isAdded ? `Successfully loaded ${qtty} ${name}` : `There was not enough money to load ${qtty} ${name}`;
-
-            this.actionsHistory.push(result);
         });
 
         return this.actionsHistory.join('\n');
     }
 
-    addToMenu(meal, neededProducts = [], price ) {
-        const mealReceipt = {};
-
-        neededProducts.forEach(element => {
-            let pName = element.split(' ')[0];
-            let pQtty = +element.split(' ')[1];
-            mealReceipt[pName] = pQtty;
-        });
-
-        class Meal {
-            constructor(name, mealReceipt, price){
-                this.name = name;
-                this.mealReceipt = mealReceipt;
-                this.price = +price;
-            }
+    addToMenu(meal, neededProducts, price) {
+        if (this.menu[meal]) {
+            return `The ${meal} is already in our menu, try something different.`
         }
 
-        const currentMeal = new Meal(meal, mealReceipt, price);
+        this.menu[meal] = {
+            products: neededProducts,
+            price: +price
+        };
+        return `Great idea! Now with the ${meal} we have ${Object.keys(this.menu).length} meals in the menu, other ideas?`
 
-        const searchedMeal = this.menu.find(m => m.name === currentMeal.name);
-        if (searchedMeal) {
-            return `The ${currentMeal.name} is already in our menu, try something different.`
-        }
-        this.menu.push(currentMeal);
-        return `Great idea! Now with the ${currentMeal.name} we have ${this.menu.length} meals in the menu, other ideas?`;
     }
 
     showTheMenu() {
-        if (this.menu.length === 0) {
+        if (Object.keys(this.menu).length === 0) {
             return `Our menu is not ready yet, please come later...`;
         }
-        return `${this.menu.map(m => `${m.name} - $ ${m.price.toFixed(2)}`).join('\n')}`;
+
+        const result = [];
+        for (const meal in this.menu) {
+            result.push(`${meal} - $ ${this.menu[meal].price}\n`)
+        }
+
+        return result.join('');
     }
 
     makeTheOrder(meal) {
-        let currentMeal = this.menu.find(m => m.name === meal);
-        if (!currentMeal) {
-            return `There is not ${meal} yet in our menu, do you want to order something else?`;
+        if (!this.menu.hasOwnProperty(meal)) {
+            return `There is not ${meal} yet in our menu, do you want to order something else?`
         }
 
-        const receipt = currentMeal.mealReceipt;
-        let canMakeMeal = true;
-        for (const key in receipt) {
-            if (!Object.keys(this.productsInStock).includes(key) || this.productsInStock[key] - receipt[key] < 0) {
-                canMakeMeal = false;
-                break;
+        const receipt = {};
+        this.menu[meal].products.forEach(element => {
+            const [name, qtty] = element.split(' ');
+            if (!receipt[name]) {
+                receipt[name] = 0;
+            }
+            receipt[name] += +qtty;
+        });
+
+        for (const name in receipt) {
+            if (!this.productsInStock[name] || this.productsInStock[name] < receipt[name]) {
+                return `For the time being, we cannot complete your order (${meal}), we are very sorry...`;
             }
         }
 
-        if (!canMakeMeal) {
-            return `For the time being, we cannot complete your order (${meal}), we are very sorry...`;
+        for (const name in receipt) {
+            this.productsInStock[name] -= receipt[name];
         }
 
-        for (const key in this.productsInStock) {
-            this.productsInStock[key] -=  receipt[key];
-        }
+        this.budget += this.menu[meal].price;
 
-        this.budget += currentMeal.price;
-        return `Your order (${meal}) will be completed in the next 30 minutes and will cost you ${currentMeal.price}.`;
+        return `Your order (${meal}) will be completed in the next 30 minutes and will cost you ${this.menu[meal].price}.`;
     }
 }
 
 
-let kitchen = new Kitchen(1000);
-console.log(kitchen.loadProducts(['Banana 10 5', 'Banana 20 10', 'Strawberries 10 30', 'Yogurt 10 10', 'Yogurt 500 1500', 'Honey 5 50']));
+const kitchen = new Kitchen(1000);
+
+console.log(kitchen.loadProducts(['Banana 10 5', 'Banana 20 10', 'Strawberries 50 30', 'Yogurt 10 10', 'Yogurt 500 1500', 'Honey 5 50']));
+
 console.log(kitchen.addToMenu('frozenYogurt', ['Yogurt 1', 'Honey 1', 'Banana 1', 'Strawberries 10'], 9.99));
+console.log(kitchen.addToMenu('Pizza', ['Flour 0.5', 'Oil 0.2', 'Yeast 0.5', 'Salt 0.1', 'Sugar 0.1', 'Tomato sauce 0.5', 'Pepperoni 1', 'Cheese 1.5'], 15.55));
 console.log(kitchen.addToMenu('frozenYogurt', ['Yogurt 1', 'Honey 1', 'Banana 1', 'Strawberries 10'], 9.99));
-console.log(kitchen.addToMenu('fronYogurt', ['Yogurt 1', 'Honey 1', 'Banana 1', 'Strawberries 10'], 9.9));
 
 console.log(kitchen.showTheMenu());
-console.log(kitchen.makeTheOrder('sdf'));
+
+console.log(kitchen.makeTheOrder('frozenYaaaogurt'));
 console.log(kitchen.makeTheOrder('frozenYogurt'));
-console.log(kitchen.makeTheOrder('frozenYogurt'));
-console.log(kitchen.makeTheOrder('frozenYogurt'));
-console.log(kitchen.makeTheOrder('frozenYogurt'));
-console.log(kitchen.makeTheOrder('frozenYogurt'));
-console.log(kitchen.makeTheOrder('frozenYogurt'));
-console.log(kitchen.productsInStock);

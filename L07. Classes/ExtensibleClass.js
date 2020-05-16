@@ -1,11 +1,11 @@
 let Extensible = (function () {
-    let id = 0;
+    let i = 0;
 
     class Extensible {
-        constructor() {
-            this.id = id++;
-        }
-
+       constructor() {
+           this.id = i++;
+       }
+        
         extend(template) {
             for (const key in template) {
                 const element = template[key];
@@ -50,6 +50,3 @@ let obj3 = new Extensible();
 console.log(obj1.id);
 console.log(obj2.id);
 console.log(obj3.id);
-
-
-
