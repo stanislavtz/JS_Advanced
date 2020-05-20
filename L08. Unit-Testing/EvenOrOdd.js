@@ -1,24 +1,33 @@
 let isOddOrEven = require('./functionality');
 let assert = require('chai').assert;
 
-describe('test isOddOrEven() behaviore', () => {
-    it('check if result is undefined when number is given', () => {
-        let result = isOddOrEven(5)
-        assert.equal(result, undefined);
+describe("isOddOrEven functionality", function () {
+    let expectedResult;
+    let actualResult;
+    
+    beforeEach(function () {
+        expectedResult = null;;
+        actualResult = null;
+    })
+
+    it("The given input is not a string", function () {
+        expectedResult = undefined;
+        actualResult = isOddOrEven(true);
+
+        assert.equal(expectedResult, actualResult)
     });
 
-    it('check if result is undefined when boolean is given', () => {
-        let result = isOddOrEven(true)
-        assert.equal(result, undefined);
+    it("Returns odd", function () {
+        expectedResult = "odd";
+        actualResult = isOddOrEven("asd");
+
+        assert.equal(expectedResult, actualResult)
     });
 
-    it('check if string length is even', () => {
-        let result = isOddOrEven('string');
-        assert.equal(result, 'even');
-    });
+    it("Returns even", function () {
+        expectedResult = "even";
+        actualResult = isOddOrEven("asad");
 
-    it('check if string length is odd', () => {
-        let result = isOddOrEven('strng');
-        assert.equal(result, 'odd');
+        assert.equal(expectedResult, actualResult)
     });
 });
