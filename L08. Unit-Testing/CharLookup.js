@@ -1,41 +1,47 @@
 let lookupChar = require('./functionality');
 let assert = require('chai').assert;
 
-describe('check lookupChar() functionality and behavoire', () => {
-    it('check if first argument is not string', () => {
-        let result = lookupChar([], 3);
+describe("lookupChar functionality", function () {
+    let expectedResult;
+    let actualResult;
+    
+    beforeEach(function () {
+        expectedResult = null;;
+        actualResult = null;
+    })
 
-        assert.equal(result, undefined);
+    it("Returns undefine if not string passed in as first parameter", function () {
+        expectedResult = undefined;
+        actualResult = lookupChar(5, 5);
+
+        assert.equal(expectedResult, actualResult);
     });
 
-    it('check if second argument is not integer number', () => {
-        let result = lookupChar('string', 9.8);
+    it("Returns undefine if not integer passed in as second parameter", function () {
+        expectedResult = undefined;
+        actualResult = lookupChar('asd', 5.5);
 
-        assert.equal(result, undefined);
+        assert.equal(expectedResult, actualResult);
     });
 
-    it('check if second argument is not integer number', () => {
-        let result = lookupChar('string', '0');
+    it("Returns \"Incorrect index\" if index is bigger than string.length", function () {
+        expectedResult = "Incorrect index";
+        actualResult = lookupChar("asdf", 4);
 
-        assert.equal(result, undefined);
+        assert.equal(expectedResult, actualResult);
     });
     
-    it('check if index is bigger then string legth', () => {
-        assert.equal(lookupChar('foo', 3), "Incorrect index");        
-               
-    });
-    
-    it('check if index is negative', () => {
-        assert.equal(lookupChar('foo', -1), "Incorrect index"); 
-    });
-    
-    it('check if result is correct', () => {
-         let result = lookupChar('string', 0);
-         assert.equal(result, 's');
-    });
+    it("Returns \"Incorrect index\" if index is negative", function () {
+        expectedResult = "Incorrect index";
+        actualResult = lookupChar("asdf", -1);
 
-    it('check if result is correct', () => {
-        let result = lookupChar('string', 'string'.length - 1);
-        assert.equal(result, 'g');
-   });
+        assert.equal(expectedResult, actualResult);
+    });
+    
+    it("Returns correct char", function () {
+        expectedResult = "f";
+        actualResult = lookupChar("asdf", 3);
+
+        assert.equal(expectedResult, actualResult);
+    });
 });
