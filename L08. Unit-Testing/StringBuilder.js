@@ -1,106 +1,143 @@
-//not my solution - just need some parts of this code as example. Will delete it soon.
-let expect = require('chai').expect;
-let StringBuilder = require('./input');
+describe("StringBuilder functionality", () => {
+    let expectedResult;
+    let actualResult;
 
-describe('StringBuilder', function () {
-    let builder;
-
-    it('initialization does not throw', function () {
-        let initEmpty = () => builder = new StringBuilder();
-        expect(initEmpty).to.not.throw();
-        let initParam = () => builder = new StringBuilder('hello');
-        expect(initParam).to.not.throw();
+    beforeEach(() => {
+        sb = new StringBuilder("Hello");
+        expectedResult = null;
+        actualResult = null;
     });
 
-    it('invalid constructor parameter', function () {
-        let willThrow = () => builder = new StringBuilder(5);
-        expect(willThrow).to.throw();
-    });
+    describe("constructor functionality", () => {
+        it("create a StringBuilder with given not string input", () => {
+            let sb1 = new StringBuilder();
+            expectedResult = [];
+            actualResult = sb1._stringArray;
 
-    describe('with empty constructor', function () {
-        beforeEach(function () {
-            builder = new StringBuilder();
+            assert.deepEqual(expectedResult, actualResult);
+            assert.isArray(sb1._stringArray);
         });
 
-        it('has all properties', function () {
-            expect(builder.hasOwnProperty('_stringArray')).to.equal(true, "Missing _stringArray property");
-        });
+        it("create a Stringbuilder with passed string", () => {
+            expectedResult = [..."Hello"];
+            actualResult = sb._stringArray;
 
-        it('has functions attached to prototype', function () {
-            expect(Object.getPrototypeOf(builder).hasOwnProperty('append')).to.equal(true, "Missing append function");
-            expect(Object.getPrototypeOf(builder).hasOwnProperty('prepend')).to.equal(true, "Missing prepend function");
-            expect(Object.getPrototypeOf(builder).hasOwnProperty('insertAt')).to.equal(true, "Missing insertAt function");
-            expect(Object.getPrototypeOf(builder).hasOwnProperty('remove')).to.equal(true, "Missing remove function");
-            expect(Object.getPrototypeOf(builder).hasOwnProperty('toString')).to.equal(true, "Missing toString function");
-        });
-
-        it('must initialize data to an empty array', function () {
-            expect(builder._stringArray instanceof Array).to.equal(true, 'Data must be of type array');
-            expect(builder._stringArray.length).to.equal(0, 'Data array must be initialized empty');
+            assert.deepEqual(expectedResult, actualResult);
         });
     });
 
-    describe('constructor with parameter', function () {
-        let startingString = 'hello';
+    describe("append method functionality", () => {
+        it("appends given string to the initial one", () => {
+            sb.append(", world!");
+            expectedResult = ",";
+            actualResult = sb._stringArray[5];
 
-        beforeEach(function () {
-            builder = new StringBuilder(startingString);
+            assert.equal(expectedResult, actualResult);
         });
 
-        it('must initialize data to a string array', function () {
-            expect(builder._stringArray instanceof Array).to.equal(true, 'Data must be of type array');
-            compareArray(builder._stringArray, Array.from(startingString));
-        });
+        it("increase the length of the initial string", () => {
+            sb.append(" it's me");
+            assert.equal(13, sb.toString().length)
+        })
 
-        it('appends correctly', function () {
-            let str = ', world';
-            builder.append(str);
-            compareArray(builder._stringArray, Array.from(startingString + str));
-        });
-
-        it('prepends correctly', function () {
-            let str = 'welcome ';
-            builder.prepend(str);
-            compareArray(builder._stringArray, Array.from(str + startingString));
-        });
-
-        it('inserts correctly', function () {
-            let str = 'kek';
-            builder.insertAt(str, 3);
-            let expected = Array.from(startingString);
-            expected.splice(3, 0, ...str);
-            compareArray(builder._stringArray, expected);
-        });
-
-        it('removes correctly', function () {
-            builder.remove(1, 3);
-            compareArray(builder._stringArray, Array.from('ho'));
-        });
-
-        it('stringifies correctly', function () {
-            expect(builder.toString()).to.equal(startingString);
-        });
-
-        it('invalid append parameter', function () {
-            let willThrow = () => builder.append(5);
-            expect(willThrow).to.throw();
-        });
-
-        it('invalid prepend parameter', function () {
-            let willThrow = () => builder.prepend(5);
-            expect(willThrow).to.throw();
-        });
-
-        it('invalid insertAt parameter', function () {
-            let willThrow = () => builder.insertAt(5, 1);
-            expect(willThrow).to.throw();
+        it("Throws error if not string is passed it", () => {
+            let willThrow = () => sb.append();
+            assert.throws(willThrow, "Argument must be string");
         });
     });
 
-    function compareArray(source, expected) {
-        expect(source.length).to.equal(expected.length, "Arrays don't match");
-        for (let i = 0; i < source.length; i++) {
-            expect(source[i]).to.equal(expected[i], 'Element ' + i + ' mismatch');
-        }
-    }
+    describe("prepend method functionality", () => {
+        it("preprends string toh e initial one", () => {
+            sb.prepend("Hey! ");
+            expectedResult = [..."Hey! Hello"];
+            actualResult = sb._stringArray;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("increase the length of the initial string", () => {
+            it("increase the length of the initial string", () => {
+                sb.prepend("Hi, i am ");
+                assert.equal(18, sb.toString().length)
+            })
+        })
+
+        it("Throws error if not string is passed it", () => {
+            let willThrow = () => sb.prepend();
+            assert.throws(willThrow, "Argument must be string");
+        });
+    });
+
+    describe("insertAt method functionality", () => {
+        it("insert a string on the given index", () => {
+            let sb = new StringBuilder("Hello");
+            sb.insertAt("oo", 3);
+
+            expectedResult = [..."Heloolo"];
+            actualResult = sb._stringArray;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+
+        it("Throws error if not string is passed it", () => {
+            let willThrow = () => sb.insertAt(5, 5);
+            assert.throws(willThrow, "Argument must be string");
+        });
+    });
+
+    describe("remove method functionality", () => {
+        it("removes a given number of symbols after the ponted index", () => {
+            sb.remove(2, 4);
+            expectedResult = [..."He"];
+            actualResult = sb._stringArray;
+
+            assert.deepEqual(expectedResult, actualResult);
+        });
+    });
+
+    describe("_vrfyParam static method functionality", () => {
+        it("throws error if not undefine or string passed to constructor", () => {
+            let sb1;
+            let wilThrow = () => sb1 = new StringBuilder(5);
+            assert.throws(wilThrow, "Argument must be string");
+        })
+    });
+
+    describe("toString method functionality", () => {
+        it("returns the new created string", () => {
+            sb.prepend("Hey! ");
+            sb.append(", world. The World is awesome, people should be get better!!!");
+
+            expectedResult = "Hey! Hello, world. The World is awesome, people should be get better!!!";
+            actualResult = sb.toString();
+
+            assert.equal(expectedResult, actualResult)
+        });
+    });
+
+    describe("properties and methods", () => {
+        it("has property _stringArray", () => {
+            assert.equal(true, sb.hasOwnProperty("_stringArray"));
+        });
+
+        it("has method append", () => {
+            assert.equal(true, Object.getPrototypeOf(sb).hasOwnProperty("append"));
+        });
+
+        it("has method prepend", () => {
+            assert.equal(true, Object.getPrototypeOf(sb).hasOwnProperty("prepend"));
+        });
+
+        it("has method inserAt", () => {
+            assert.equal(true, Object.getPrototypeOf(sb).hasOwnProperty("insertAt"));
+        });
+
+        it("has method remove", () => {
+            assert.equal(true, Object.getPrototypeOf(sb).hasOwnProperty("remove"));
+        });
+
+        it("has method toString", () => {
+            assert.equal(true, Object.getPrototypeOf(sb).hasOwnProperty("toString"));
+        });
+    })
 });
