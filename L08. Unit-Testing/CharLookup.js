@@ -1,4 +1,3 @@
-let lookupChar = require('./functionality');
 let assert = require('chai').assert;
 
 describe("lookupChar functionality", function () {

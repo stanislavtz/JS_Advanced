@@ -1,4 +1,3 @@
-let mathEnforcer = require('./functionality');
 let assert = require('chai').assert;
 
 describe('mathEnforcer() functionaity', () => {

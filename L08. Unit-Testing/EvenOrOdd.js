@@ -1,4 +1,3 @@
-let isOddOrEven = require('./functionality');
 let assert = require('chai').assert;
 
 describe("isOddOrEven functionality", function () {

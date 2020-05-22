@@ -1,3 +1,5 @@
+let assert = require('chai').assert;
+
 describe("StringBuilder functionality", () => {
     let expectedResult;
     let actualResult;
