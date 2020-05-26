@@ -52,6 +52,8 @@ describe("BookStore functionality", () => {
         it("return massage that this person is hired on the given position", () => {
             expectedResult = `Stanislav started work at ${store.name} as Manager`;
             actualResult = store.hire("Stanislav", "Manager");
+
+            assert.equal(expectedResult, actualResult);
         });
 
         it("adds the new worker in workers list", () => {
