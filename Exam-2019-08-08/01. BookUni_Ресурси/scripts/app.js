@@ -57,7 +57,7 @@ function solve() {
         if (e.target.textContent.includes('Buy')) {
             currentIncome += price;
             document.querySelectorAll('h1')[1].textContent = `Total Store Profit: ${currentIncome.toFixed(2)} BGN`;
-            e.target.parentElement.textContent = '';
+            e.target.parentElement.outerHTML = '';
         }
 
         if (e.target.textContent.includes('Move')) {
