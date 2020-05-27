@@ -70,7 +70,10 @@ class Library {
 
         if (this.subscribers.length > 0) {
             this.subscribers.forEach(person => {
-                result += `Subscriber: ${person.name}, Type: ${person.type}\nReceived books: ${person.books.map(b => `${b.title} by ${b.author}`).join(', ')}\n`;
+                const name = person.name;
+                const type = person.type;
+                const books = person.books.map(b => `${b.title} by ${b.author}`).join(', ');
+                result += `Subscriber: ${name}, Type: ${type}\nReceived books: ${books}\n`;
             });
 
         } else {
@@ -92,7 +95,7 @@ lib.subscribe('John', 'special');
 lib.subscribe('Josh','vip')
 
 lib.receiveBook('John', 'A Song of Ice and Fire', 'George R. R. Martin');
-// lib.receiveBook('Peter', 'Lord of the rings', 'J. R. R. Tolkien');
+lib.receiveBook('Peter', 'Lord of the rings', 'J. R. R. Tolkien');
 lib.receiveBook('John', 'Harry Potter', 'J. K. Rowling');
 lib.receiveBook('Josh', 'Graf Monte Cristo', 'Alexandre Dumas');
 lib.receiveBook('Josh','Cromwell','Victor Hugo');
@@ -101,4 +104,6 @@ lib.receiveBook('Josh','Bug-Jargal','Victor Hugo');
 lib.receiveBook('Josh','Les Orientales','Victor Hugo');
 lib.receiveBook('Josh','Marion de Lorme','Victor Hugo');
 
-console.log(lib.showInfo())
+lib.unsubscribe("Josh");
+
+console.log(lib.showInfo());
