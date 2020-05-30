@@ -2,27 +2,27 @@ function solve() {
    const addBtn = document.querySelector('#add-new button');
    addBtn.addEventListener('click', addNewProduct);
 
-   const filterBtn = document.querySelector('#products .filter button');
+   const filterBtn = document.querySelector('.filter button');
+   const criteria = document.querySelector('#filter');
    filterBtn.addEventListener('click', filterByCriteria);
 
-   const avlbItemArea = document.querySelector('#products ul');
-   avlbItemArea.addEventListener('click', addToBasket);
+   const availableItems = document.querySelector('#products ul');
+   availableItems.addEventListener('click', addToBasket);
 
    const buyButton = document.querySelector('#myProducts button')
    buyButton.addEventListener('click', buyProducts);
-   
+
    let totalPrice = document.querySelectorAll('h1')[1];
    let currentPrice = 0;
 
    function buyProducts(e) {
-      document.querySelector('#myProducts ul').innerHTML = '';
+      document.querySelector('#myProducts ul').textContent = '';
       totalPrice.textContent = `Total Price: 0.00`;
       currentPrice = 0;
    }
 
    function addToBasket(e) {
-      console.log(e)
-      if(e.target.localName === 'button') {
+      if (e.target.localName === 'button') {
          const ul = document.querySelector('#myProducts ul');
          const li = document.createElement('li');
          const strong = document.createElement('strong');
@@ -32,15 +32,15 @@ function solve() {
 
          let qtty = Number(qttyContent.textContent.split(' ')[1]);
 
-         if(qtty > 1) {
-            qttyContent.textContent = `Available: ${--qtty}`;
-         } else {
-            e.target.parentElement.parentElement.outerHTML = '';
+         qttyContent.textContent = `Available: ${--qtty}`;
+
+         if (qtty < 1) {
+            e.target.parentElement.parentElement.remove();
          }
 
          li.textContent = item.textContent;
          strong.textContent = e.target.previousSibling.textContent;
-         
+
          li.appendChild(strong);
          ul.appendChild(li);
 
@@ -50,14 +50,11 @@ function solve() {
    }
 
    function filterByCriteria(e) {
-      const criteria = e.target.previousElementSibling.value;
-      const allItems = avlbItemArea.querySelectorAll('span');
-
-      allItems.forEach(item => {
-         item.parentElement.style.display = 'block';
-
-         if (criteria && !item.textContent.toLowerCase().includes(criteria.toLowerCase())) {
-            item.parentElement.style.display = 'none';
+      Array.from(availableItems.children).forEach(item => {
+         if (item.firstChild.textContent.includes(criteria.value)) {
+            item.style.display = 'block';
+         } else {
+            item.style.display = 'none';
          }
       });
    }
@@ -72,31 +69,42 @@ function solve() {
          price: Number(tokens[2].value)
       }
 
-      if(newItem.name && newItem.qtty && newItem.price) {
+      const productsList = document.querySelectorAll('#products span');
+
+      if (newItem.name && newItem.qtty && newItem.price && ![...productsList].map(x => x.textContent).includes(newItem.name)) {
+
          const ul = document.querySelector('#products ul');
          const li = document.createElement('li');
          ul.appendChild(li);
-   
+
          const span = document.createElement('span');
          span.textContent = newItem.name;
          li.appendChild(span);
-   
+
          const strongQtty = document.createElement('strong');
          strongQtty.textContent = `Available: ${newItem.qtty}`;
          li.appendChild(strongQtty);
-   
-         const div = document.createElement('div')
+
+         const div = document.createElement('div');
          li.appendChild(div);
-   
+
          const strongPrice = document.createElement('strong');
          strongPrice.textContent = `${newItem.price.toFixed(2)}`;
          div.appendChild(strongPrice);
-   
+
          const addToList = document.createElement('button');
-         addToList.textContent = 'Add to Client\'s List';
-         div.appendChild(addToList)
-   
-         tokens.forEach(t => t.value = null)
+         addToList.textContent = "Add to Client's List";
+         div.appendChild(addToList);
+
+      } else if ([...productsList].map(x => x.textContent).includes(newItem.name)) {
+
+         const index = [...productsList].map(x => x.textContent).indexOf(newItem.name);
+         const element = productsList[index];
+
+         element.nextSibling.textContent = `Available: ${newItem.qtty}`;
+         element.nextSibling.nextSibling.firstChild.textContent = `${newItem.price.toFixed(2)}`;
       }
+
+      tokens.forEach(t => t.value = null);
    }
 }
