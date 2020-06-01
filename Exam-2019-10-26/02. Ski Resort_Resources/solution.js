@@ -5,6 +5,7 @@ class SkiResort {
         this.voters = 0;
         this.hotels = [];
     }
+
     get bestHotel() {
         if (this.voters === 0) {
             return "No votes yet";
@@ -62,9 +63,7 @@ class SkiResort {
         }
         let grade = this.hotels.reduce((a, b) => a + b.points, 0)/this.voters;
         return `Average grade: ${grade.toFixed(2)}`;
-    }
-
-    
+    }    
 }
 
 module.exports = SkiResort;
