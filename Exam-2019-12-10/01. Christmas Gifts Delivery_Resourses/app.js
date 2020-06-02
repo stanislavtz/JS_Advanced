@@ -45,17 +45,18 @@ function solution() {
         const allGifts = listSection.querySelector('ul');
         allGifts.appendChild(li);
 
-        let gifts = Array.from(listSection.querySelector('ul').children);
-        gifts.sort((a, b) =>
-            (a.textContent.slice(0, a.textContent.indexOf('Send')))
-                .localeCompare(b.textContent.slice(0, b.textContent.lastIndexOf('Send'))));
-        
-        allGifts.innerHTML = '';
-        gifts.forEach(element => {
-            allGifts.appendChild(element)
-        });
-
+        sortGifts();
         input.value = '';
+
+        function sortGifts() {
+            let gifts = Array.from(listSection.querySelector('ul').children);
+            gifts.sort((a, b) => (a.textContent.slice(0, a.textContent.indexOf('Send')))
+                .localeCompare(b.textContent.slice(0, b.textContent.lastIndexOf('Send'))));
+            allGifts.innerHTML = '';
+            gifts.forEach(element => {
+                allGifts.appendChild(element);
+            });
+        }
 
         function creteButton(btnId, btnText) {
             const button = document.createElement('button');
