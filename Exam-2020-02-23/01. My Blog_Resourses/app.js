@@ -9,7 +9,7 @@ function solve() {
    const createBtn = document.querySelector('button[class = "btn create"]');
    createBtn.addEventListener('click', createArticle);
 
-   const archive = []
+   const archive = [];
 
    function createArticle(e) {
       e.preventDefault();
@@ -40,7 +40,7 @@ function solve() {
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'btn delete';
       deleteBtn.textContent = 'Delete';
-      
+
       const archiveBtn = document.createElement('button');
       archiveBtn.className = 'btn archive';
       archiveBtn.textContent = 'Archive';
