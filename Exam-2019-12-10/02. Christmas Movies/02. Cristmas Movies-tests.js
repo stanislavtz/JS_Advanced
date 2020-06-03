@@ -44,10 +44,10 @@ describe("Christmas movie functionality", () => {
 
         it("adds a bought movie to movies collection", () => {
             movies.buyMovie('Last Christmas', ['Emilia Clarke', 'Henry Golding']);
-            actualResult = movies.movieCollection[0].name
+            actualResult = movies.movieCollection[0].name;
             expectedResult = 'Last Christmas';
 
-            assert.equal(expectedResult, actualResult)
+            assert.equal(expectedResult, actualResult);
         });
         
         it("adds a bought movie to movies collection", () => {
@@ -56,7 +56,7 @@ describe("Christmas movie functionality", () => {
             actualResult = movies.movieCollection.length;
             expectedResult = 2;
 
-            assert.equal(expectedResult, actualResult)
+            assert.equal(expectedResult, actualResult);
         });
 
         it("return proper message if movie is added successfully", () => {
@@ -86,7 +86,7 @@ describe("Christmas movie functionality", () => {
             actualResult = movies.discardMovie('StarWars');
             expectedResult = `You just threw away StarWars!`;
 
-            assert.equal(expectedResult, actualResult)
+            assert.equal(expectedResult, actualResult);
         });
     });
 
@@ -139,8 +139,8 @@ describe("Christmas movie functionality", () => {
             actualResult = movies.favouriteMovie();
             expectedResult = `Your favourite movie is StarWars VI and you have watched it 3 times!`;
 
-            assert.equal(expectedResult, actualResult)
-        })
+            assert.equal(expectedResult, actualResult);
+        });
     });
 
     describe("mostStarredActor method, functionality", () => {
