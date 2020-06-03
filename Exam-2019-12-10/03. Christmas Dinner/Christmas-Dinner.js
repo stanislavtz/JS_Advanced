@@ -36,26 +36,26 @@ class ChristmasDinner {
     }
 
     recipes(recipe) {
-        const name = recipe.recipeName;
-        const products = recipe.productsList;
+        const recipeName = recipe.recipeName;
+        const productsList = recipe.productsList;
         
-        if(products.length < 1) {
+        if(productsList.length < 1) {
             return;
         }
 
-        for (const product of products) {
+        for (const product of productsList) {
             if (!this.products.includes(product)) {
                 throw new Error('We do not have this product');
             }
         }
 
-        this.dishes.push({ name, products });
+        this.dishes.push({ recipeName, productsList });
 
-        return `${name} has been successfully cooked!`;
+        return `${recipeName} has been successfully cooked!`;
     }
 
     inviteGuests(name, dish) {
-        if (!this.dishes.map(d => d.name).includes(dish)) {
+        if (!this.dishes.map(d => d.recipeName).includes(dish)) {
             throw new Error(`We do not have this dish`);
         }
 
@@ -73,8 +73,8 @@ class ChristmasDinner {
         const guestsNames = Object.keys(this.guests);
 
         guestsNames.forEach(name => {
-            const dish = this.dishes.filter(d => d.name === this.guests[name]);
-            result += `${name} will eat ${this.guests[name]}, which consists of ${dish[0].products.join(', ')}\n`
+            const dish = this.dishes.filter(d => d.recipeName === this.guests[name]);
+            result += `${name} will eat ${this.guests[name]}, which consists of ${dish[0].productsList.join(', ')}\n`
         });
 
         return result.trim();
@@ -108,6 +108,5 @@ dinner.recipes({
 dinner.inviteGuests('Ivan', 'Oshav');
 dinner.inviteGuests('Petar', 'Folded cabbage leaves filled with rice');
 dinner.inviteGuests('Georgi', 'Peppers filled with beans');
-
 
 console.log(dinner.showAttendance());
