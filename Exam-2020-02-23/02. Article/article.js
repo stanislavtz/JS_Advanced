@@ -2,7 +2,6 @@ class Article {
     _comments = [];
     _likes = [];
     _commentId = 0;
-    _replayId = 0;
 
     constructor(title, creator) {
         this.title = title;
@@ -60,12 +59,8 @@ class Article {
             return `${username} commented on ${this.title}`;
         }
 
-        if(comment.Replies.length === 0){
-            this._replayId = 0;
-        }
-
         const reply = {
-            Id: ++this._replayId,
+            Id: comment.Replies.length + 1,
             Username: username,
             Content: content
         }
