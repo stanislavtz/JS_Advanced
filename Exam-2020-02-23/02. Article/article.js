@@ -72,11 +72,13 @@ class Article {
         let result = '';
         result += `Title: ${this.title}\nCreator: ${this.creator}\nLikes: ${this._likes.length}\nComments:\n`;
  
+        let sortedReplies;
         if(sortingType === 'username') {
             this._comments = this._comments.sort((a, b) => a.Username.localeCompare(b.Username));
             this._comments.forEach(comment => {
-                let sortedReplies = comment.Replies.sort((a, b) => a.Username.localeCompare(b.Username));
                 result += `-- ${comment.Id}. ${comment.Username}: ${comment.Content}\n`;
+                
+                sortedReplies = comment.Replies.sort((a, b) => a.Username.localeCompare(b.Username));
                 sortedReplies.forEach(replay => {
                     result += `--- ${comment.Id}.${replay.Id}. ${replay.Username}: ${replay.Content}\n`;
                 });
@@ -86,8 +88,9 @@ class Article {
         if(sortingType === 'asc') {
             this._comments = this._comments.sort((a, b) => a.Id - b.Id);
             this._comments.forEach(comment => {
-                let sortedReplies = comment.Replies.sort((a, b) => a.Id - b.Id);
                 result += `-- ${comment.Id}. ${comment.Username}: ${comment.Content}\n`;
+                
+                sortedReplies = comment.Replies.sort((a, b) => a.Id - b.Id);
                 sortedReplies.forEach(replay => {
                     result += `--- ${comment.Id}.${replay.Id}. ${replay.Username}: ${replay.Content}\n`;
                 });
@@ -97,8 +100,9 @@ class Article {
         if(sortingType === 'desc') {
             this._comments = this._comments.sort((a, b) => b.Id - a.Id);
             this._comments.forEach(comment => {
-                let sortedReplies = comment.Replies.sort((a, b) => b.Id - a.Id);
                 result += `-- ${comment.Id}. ${comment.Username}: ${comment.Content}\n`;
+                
+                sortedReplies = comment.Replies.sort((a, b) => b.Id - a.Id);
                 sortedReplies.forEach(replay => {
                     result += `--- ${comment.Id}.${replay.Id}. ${replay.Username}: ${replay.Content}\n`;
                 });
