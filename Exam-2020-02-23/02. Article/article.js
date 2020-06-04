@@ -25,12 +25,11 @@ class Article {
             throw new Error(`You can't like your own articles!`);
         }
 
-        if (!this._likes.includes(username)) {
-            this._likes.push(username);
-        }
-        else {
+        if (this._likes.includes(username)) {
             throw new Error(`You can't like the same article twice!`);
         }
+
+        this._likes.push(username);
 
         return `${username} liked ${this.title}!`;
     }
@@ -64,7 +63,6 @@ class Article {
             Username: username,
             Content: content
         }
-
         comment.Replies.push(reply);
 
         return `You replied successfully`;
