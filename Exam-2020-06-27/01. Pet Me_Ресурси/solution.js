@@ -1,5 +1,4 @@
 function solve() {
-    // TODO ...
     const form = document.getElementById('container');
     const petsList = document.querySelector('#adoption > ul');
     const adoptedList = document.querySelector('#adopted > ul');
@@ -13,19 +12,22 @@ function solve() {
             return;
         }        
         
-        const li = el('li');
-        const p = el('p');
-        const sOwner = el('span', `Owner: ${owner.value}`);
-        const contactBtn = el('button', 'Contact with owner');
-        contactBtn.addEventListener('click', makeContact);
-        
+        const li = document.createElement('li');
+        const p = document.createElement('p');
         p.innerHTML = `<strong>${name.value}</strong> is a <strong>${age.value}</strong> year old <strong>${kind.value}</strong>`;
+
+        const sOwner = document.createElement('span');
+        sOwner.textContent = `Owner: ${owner.value}`;
         
+        const contactBtn = document.createElement('button');
+        contactBtn.textContent = 'Contact with owner';
+
         li.appendChild(p);
         li.appendChild(sOwner);
         li.appendChild(contactBtn);
+        petsList.appendChild(li);
         
-        petsList.append(li);
+        contactBtn.addEventListener('click', makeContact);
 
         name.value = '';
         age.value = '';
@@ -37,11 +39,12 @@ function solve() {
         const parent = e.target.parentElement;
         e.target.remove();
 
-        const takeBtn = el('button');
+        const takeBtn = document.createElement('button');
         takeBtn.textContent = 'Yes! I take it!';
 
-        const div = el('div');
-        const inputEl = el('input', '', { placeholder: 'Enter your names' });
+        const div = document.createElement('div');
+        const inputEl = document.createElement('input');
+        inputEl.setAttribute('placeholder', 'Enter your names');
 
         div.appendChild(inputEl);
         div.appendChild(takeBtn);
@@ -57,7 +60,9 @@ function solve() {
             const span = e.target.parentElement.parentElement.querySelector('span');
             span.textContent = `New Owner: ${inputEl.value}`;
 
-            const checkBtn = el('button', 'Checked');
+            const checkBtn = document.createElement('button');
+            checkBtn.textContent = 'Checked';
+
             e.target.parentElement.parentElement.appendChild(checkBtn);
             e.target.parentElement.remove();
 
@@ -65,19 +70,5 @@ function solve() {
                 ev.target.parentElement.remove();
             });
         });
-    }
-
-    function el(type, content, attributes) {
-        let result = document.createElement(type);
-
-        if (content) {
-            result.textContent = content;
-        }
-
-        if (attributes) {
-            Object.assign(result, attributes);
-        }
-
-        return result;
     }
 }
