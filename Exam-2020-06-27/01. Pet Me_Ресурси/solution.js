@@ -27,23 +27,6 @@ function solve() {
         
         petsList.append(li);
 
-        let newLiItem = Array.from(document.querySelector("#adoption > ul").children)[0];
-        console.log(newLiItem);
-
-        let insideLiElements = Array.from(newLiItem.children); // [p, span, btn]
-        console.log(insideLiElements);
-
-        let [p, span, btn] = insideLiElements;
-        console.log([p, span, btn]);
-
-        let [strongName, strongAge, strongKind] = Array.from(p.children); // [apn, span, span]
-
-        console.log(strongName);
-        console.log(strongAge);
-        console.log(strongKind);
-
-        console.log(insideLiElements.length);
-
         name.value = '';
         age.value = '';
         kind.value = '';
