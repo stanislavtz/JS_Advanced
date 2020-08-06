@@ -44,14 +44,14 @@ class Article {
     }
    
     comment(username, content, id) {
-        let comment = this._comments.find(c => c.Id === id);
+        let comment = this._comments.find(c => c.id === id);
 
-        if (!id || !comment) {
+        if (!comment) {
             comment = {
-                Id: ++this._commentId,
-                Username: username,
-                Content: content,
-                Replies: []
+                id: ++this._commentId,
+                username,
+                content,
+                replies: []
             }
             this._comments.push(comment);
 
@@ -59,57 +59,57 @@ class Article {
         }
 
         const reply = {
-            Id: comment.Replies.length + 1,
-            Username: username,
-            Content: content
+            id: comment.replies.length + 1,
+            username,
+            content
         }
-        comment.Replies.push(reply);
+        comment.replies.push(reply);
 
         return `You replied successfully`;
     }
 
     toString(sortingType) {
-        let result = '';
-        result += `Title: ${this.title}\nCreator: ${this.creator}\nLikes: ${this._likes.length}\nComments:\n`;
+        const result = [];
+        result.push(`Title: ${this.title}\nCreator: ${this.creator}\nLikes: ${this._likes.length}\nComments:`);
  
-        let sortedReplies;
+        // let sortedReplies;
         if(sortingType === 'username') {
-            this._comments = this._comments.sort((a, b) => a.Username.localeCompare(b.Username));
+            this._comments = this._comments.sort((a, b) => a.username.localeCompare(b.username));
             this._comments.forEach(comment => {
-                result += `-- ${comment.Id}. ${comment.Username}: ${comment.Content}\n`;
+                result.push(`-- ${comment.id}. ${comment.username}: ${comment.content}`);
                 
-                sortedReplies = comment.Replies.sort((a, b) => a.Username.localeCompare(b.Username));
-                sortedReplies.forEach(replay => {
-                    result += `--- ${comment.Id}.${replay.Id}. ${replay.Username}: ${replay.Content}\n`;
+                comment.replies = comment.replies.sort((a, b) => a.username.localeCompare(b.username));
+                comment.replies.forEach(replay => {
+                    result.push(`--- ${comment.id}.${replay.id}. ${replay.username}: ${replay.content}`);
                 });
             });
         }
 
         if(sortingType === 'asc') {
-            this._comments = this._comments.sort((a, b) => a.Id - b.Id);
+            this._comments = this._comments.sort((a, b) => a.id - b.id);
             this._comments.forEach(comment => {
-                result += `-- ${comment.Id}. ${comment.Username}: ${comment.Content}\n`;
+                result.push(`-- ${comment.id}. ${comment.username}: ${comment.content}`);
                 
-                sortedReplies = comment.Replies.sort((a, b) => a.Id - b.Id);
-                sortedReplies.forEach(replay => {
-                    result += `--- ${comment.Id}.${replay.Id}. ${replay.Username}: ${replay.Content}\n`;
+                comment.replies = comment.replies.sort((a, b) => a.id - b.id);
+                comment.replies.forEach(replay => {
+                    result.push(`--- ${comment.id}.${replay.id}. ${replay.username}: ${replay.content}`);
                 });
             });
         }
 
         if(sortingType === 'desc') {
-            this._comments = this._comments.sort((a, b) => b.Id - a.Id);
+            this._comments = this._comments.sort((a, b) => b.id - a.id);
             this._comments.forEach(comment => {
-                result += `-- ${comment.Id}. ${comment.Username}: ${comment.Content}\n`;
+                result.push(`-- ${comment.id}. ${comment.username}: ${comment.content}`);
                 
-                sortedReplies = comment.Replies.sort((a, b) => b.Id - a.Id);
-                sortedReplies.forEach(replay => {
-                    result += `--- ${comment.Id}.${replay.Id}. ${replay.Username}: ${replay.Content}\n`;
+                comment.replies = comment.replies.sort((a, b) => b.id - a.id);
+                comment.replies.forEach(replay => {
+                    result.push(`--- ${comment.id}.${replay.id}. ${replay.username}: ${replay.content}`);
                 });
             });
         }
 
-        return result.trim();
+        return result.join('\n');
     }
 }
 
