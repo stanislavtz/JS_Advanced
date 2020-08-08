@@ -1,7 +1,7 @@
 class Article {
-    _comments = [];
-    _likes = [];
-    _commentId = 0;
+    #comments = [];
+    #likes = [];
+    #commentId = 0;
 
     constructor(title, creator) {
         this.title = title;
@@ -9,14 +9,14 @@ class Article {
     }
 
     get likes() {
-        if (this._likes.length === 0) {
+        if (this.#likes.length === 0) {
             return `${this.title} has 0 likes`;
         }
-        else if (this._likes.length === 1) {
-            return `${this._likes[0]} likes this article!`;
+        else if (this.#likes.length === 1) {
+            return `${this.#likes[0]} likes this article!`;
         }
         else {
-            return `${this._likes[0]} and ${this._likes.length - 1} others like this article!`;
+            return `${this.#likes[0]} and ${this.#likes.length - 1} others like this article!`;
         }
     }
 
@@ -25,35 +25,35 @@ class Article {
             throw new Error(`You can't like your own articles!`);
         }
 
-        if (this._likes.includes(username)) {
+        if (this.#likes.includes(username)) {
             throw new Error(`You can't like the same article twice!`);
         }
 
-        this._likes.push(username);
+        this.#likes.push(username);
 
         return `${username} liked ${this.title}!`;
     }
 
     dislike(username) {
-        if (!this._likes.includes(username)) {
+        if (!this.#likes.includes(username)) {
             throw new Error(`You can't dislike this article!`);
         }
 
-        this._likes = this._likes.filter(x => x !== username);
+        this.#likes = this.#likes.filter(x => x !== username);
         return `${username} disliked ${this.title}`;
     }
    
     comment(username, content, id) {
-        let comment = this._comments.find(c => c.id === id);
+        let comment = this.#comments.find(c => c.id === id);
 
         if (!comment) {
             comment = {
-                id: ++this._commentId,
+                id: ++this.#commentId,
                 username,
                 content,
                 replies: []
             }
-            this._comments.push(comment);
+            this.#comments.push(comment);
 
             return `${username} commented on ${this.title}`;
         }
@@ -70,12 +70,11 @@ class Article {
 
     toString(sortingType) {
         const result = [];
-        result.push(`Title: ${this.title}\nCreator: ${this.creator}\nLikes: ${this._likes.length}\nComments:`);
+        result.push(`Title: ${this.title}\nCreator: ${this.creator}\nLikes: ${this.#likes.length}\nComments:`);
  
-        // let sortedReplies;
         if(sortingType === 'username') {
-            this._comments = this._comments.sort((a, b) => a.username.localeCompare(b.username));
-            this._comments.forEach(comment => {
+            this.#comments = this.#comments.sort((a, b) => a.username.localeCompare(b.username));
+            this.#comments.forEach(comment => {
                 result.push(`-- ${comment.id}. ${comment.username}: ${comment.content}`);
                 
                 comment.replies = comment.replies.sort((a, b) => a.username.localeCompare(b.username));
@@ -86,8 +85,8 @@ class Article {
         }
 
         if(sortingType === 'asc') {
-            this._comments = this._comments.sort((a, b) => a.id - b.id);
-            this._comments.forEach(comment => {
+            this.#comments = this.#comments.sort((a, b) => a.id - b.id);
+            this.#comments.forEach(comment => {
                 result.push(`-- ${comment.id}. ${comment.username}: ${comment.content}`);
                 
                 comment.replies = comment.replies.sort((a, b) => a.id - b.id);
@@ -98,8 +97,8 @@ class Article {
         }
 
         if(sortingType === 'desc') {
-            this._comments = this._comments.sort((a, b) => b.id - a.id);
-            this._comments.forEach(comment => {
+            this.#comments = this.#comments.sort((a, b) => b.id - a.id);
+            this.#comments.forEach(comment => {
                 result.push(`-- ${comment.id}. ${comment.username}: ${comment.content}`);
                 
                 comment.replies = comment.replies.sort((a, b) => b.id - a.id);
