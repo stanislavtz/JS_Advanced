@@ -5,7 +5,7 @@
  next you should configurate Run command
  go to menu -> Run -> Open Configurations -> click on the button Add Configuration -> choose "Mocha Tests"
  change tdd -> bdd
- change tets in {"${workspaceFolder}/BookStore-tests"} 
+ change "test" in {"${workspaceFolder}/BookStore-tests"} 
  Ctrl+S
  close JSON file
 */
